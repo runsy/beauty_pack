@@ -7,7 +7,7 @@ function closet.container.get_container_formspec(pos, clicker)
 	local texture
 	if minetest.get_modpath("3d_armor")~=nil then
 		local clicker_name = clicker:get_player_name()
-		texture = minetest.formspec_escape(armor.textures[clicker_name].skin)..","..
+		texture = armor.textures[clicker_name].skin..","..
 			armor.textures[clicker_name].armor..","..armor.textures[clicker_name].wielditem
 	else
 		texture = clicker:get_properties().textures[1]
@@ -16,13 +16,11 @@ function closet.container.get_container_formspec(pos, clicker)
 
 	local formspec =
 		"size[8,8.25]" ..
-		"list[nodemeta:" .. spos .. ";main;5,0.25;3,12;]" ..
 		"model[0,0;5,5;preview_model;"..model..";"..texture..";-10,195]" ..
+		"list[current_player;cloths;3,0.25;1,4]" ..
+		"list[nodemeta:" .. spos .. ";closet;5,0.25;3,12;]" ..
 		"list[current_player;main;0,4.5;8,1;]" ..
 		"list[current_player;main;0,5.5;8,3;8]" ..
-		"list[current_player;cloths;3,0.25;1,4]" ..
-		"listring[nodemeta:" .. spos .. ";main]" ..
-		"listring[current_player;main]" ..
 		default.get_hotbar_bg(0,4.5)
 	return formspec
 end
@@ -36,9 +34,19 @@ minetest.register_allow_player_inventory_action(function(player, action, invento
 	local stack = inventory:get_stack(inventory_info.from_list, inventory_info.from_index)
 	if stack then
 		local stack_name = stack:get_name()
-		if minetest.get_item_group(stack_name , "cloth") > 0 then
-			return 1
+		local item_group = minetest.get_item_group(stack_name , "cloth")
+		if item_group == 0 then --not a cloth
+			return 0
 		end
+		--search for another cloth of the same type
+		local cloth_list = player:get_inventory():get_list("cloths")
+		for i = 1, #cloth_list do
+			local cloth_type = minetest.get_item_group(cloth_list[i]:get_name(), "cloth")
+			if cloth_type == item_group then
+				return 0
+			end
+		end
+		return 1
 	end
 	return 0
 end)
@@ -120,12 +128,12 @@ function closet.register_container(name, d)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("infotext", d.description)
 		local inv = meta:get_inventory()
-		inv:set_size("main", 12*1)
+		inv:set_size("closet", 12*1)
 	end
 	def.can_dig = function(pos,player)
 		local meta = minetest.get_meta(pos);
 		local inv = meta:get_inventory()
-		return inv:is_empty("main")
+		return inv:is_empty("closet")
 	end
 	def.on_rightclick = function(pos, node, clicker)
 		minetest.sound_play(def.sound_open, {gain = 0.3, pos = pos, max_hear_distance = 10})
@@ -141,34 +149,10 @@ function closet.register_container(name, d)
 	end
 	def.on_blast = function(pos)
 		local drops = {}
-		default.get_inventory_drops(pos, "main", drops)
+		default.get_inventory_drops(pos, "closet", drops)
 		drops[#drops+1] = "closet:" .. name
 		minetest.remove_node(pos)
 		return drops
-	end
-
-	def.on_metadata_inventory_move = function(pos, from_list, from_index,
-			to_list, to_index, count, player)
-		minetest.log("action", player:get_player_name() ..
-			" moves stuff in container at " .. minetest.pos_to_string(pos))
-	end
-	def.on_metadata_inventory_put = function(pos, listname, index, stack, player)
-		minetest.log("action", player:get_player_name() ..
-			" moves " .. stack:get_name() ..
-			" to container at " .. minetest.pos_to_string(pos))
-	end
-	def.on_metadata_inventory_take = function(pos, listname, index, stack, player)
-		minetest.log("action", player:get_player_name() ..
-			" takes " .. stack:get_name() ..
-			" from container at " .. minetest.pos_to_string(pos))
-	end
-	def.allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-		if listname == "main" then
-			if minetest.get_item_group(stack:get_name(), "cloth") > 0 then
-				return 1
-			end
-		end
-		return 0
 	end
 
 	local def_opened = table.copy(def)

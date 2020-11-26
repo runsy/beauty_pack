@@ -16,3 +16,13 @@ closet.register_container("closet", {
 	sound_close = "default_chest_close",
 	groups = {choppy = 2, oddly_breakable_by_hand = 2},
 })
+
+minetest.register_craft({
+	output = "closet:closet",
+	type = "shaped",
+		recipe = {
+		{"", "group:wood", "group:wood"},
+		{"", "group:wood", "group:mirror"},
+		{"", "group:wood", "group:wood"},
+	}
+})
