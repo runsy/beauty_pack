@@ -28,10 +28,15 @@ end
 -- Allow only "cloth" groups to put/move
 
 minetest.register_allow_player_inventory_action(function(player, action, inventory, inventory_info)
-	if inventory_info.to_list ~= "cloths" then
+	local stack
+	if inventory_info.to_list == "cloths" then
+		minetest.chat_send_all("1")
+		stack = inventory:get_stack(inventory_info.from_list, inventory_info.from_index)
+	elseif action == "put" and inventory_info.listname == "cloths" then
+		stack = inventory_info.stack
+	else
 		return
 	end
-	local stack = inventory:get_stack(inventory_info.from_list, inventory_info.from_index)
 	if stack then
 		local stack_name = stack:get_name()
 		local item_group = minetest.get_item_group(stack_name , "cloth")

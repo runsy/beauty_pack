@@ -15,7 +15,7 @@ local S = minetest.get_translator(minetest.get_current_modname())
 minetest.register_node("mirrors:mirror", {
     description = S("Mirror"),
     inventory_image = "mirrors_mirror_inv.png",
-    wield_image = "mirror_mirror_inv.png",
+    wield_image = "mirrors_mirror_inv.png",
     tiles = {"mirrors_mirror.png", "mirrors_mirror.png", "mirrors_mirror.png", "mirrors_mirror.png",
 				"mirrors_mirror_back.png","mirrors_mirror.png"},
     groups = {mirror = 1, cracky=1},
@@ -39,4 +39,3 @@ minetest.register_craft({
 		{"default:stick", "default:stick", "default:stick"},
 	}
 })
-
