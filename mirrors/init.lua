@@ -3,8 +3,6 @@
 -- License:GPLv3
 --
 
-local modname = "mirrors"
-local modpath = minetest.get_modpath(modname)
 -- internationalization boilerplate
 local S = minetest.get_translator(minetest.get_current_modname())
 

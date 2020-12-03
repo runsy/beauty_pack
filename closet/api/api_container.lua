@@ -7,7 +7,7 @@ function closet.container.get_container_formspec(pos, clicker)
 	local texture
 	if minetest.get_modpath("3d_armor")~=nil then
 		local clicker_name = clicker:get_player_name()
-		texture = armor.textures[clicker_name].skin..","..
+		texture = minetest.formspec_escape(armor.textures[clicker_name].skin)..","..
 			armor.textures[clicker_name].armor..","..armor.textures[clicker_name].wielditem
 	else
 		texture = clicker:get_properties().textures[1]
@@ -16,6 +16,7 @@ function closet.container.get_container_formspec(pos, clicker)
 
 	local formspec =
 		"size[8,8.25]" ..
+		"style[preview_model;frame_loop=0,79]"..
 		"model[0,0;5,5;preview_model;"..model..";"..texture..";-10,195]" ..
 		"list[current_player;cloths;3,0.25;1,4]" ..
 		"list[nodemeta:" .. spos .. ";closet;5,0.25;3,12;]" ..
@@ -29,12 +30,14 @@ end
 
 minetest.register_allow_player_inventory_action(function(player, action, inventory, inventory_info)
 	local stack
-	if action == "move" and inventory_info.to_list == "cloths" then --for moving items from player inventory list 'main' to 'cloths'
+	if action == "move" and inventory_info.to_list == "cloths" then
+		--for moving items from player inventory list 'main' to 'cloths'
 		if inventory_info.from_list == inventory_info.to_list then --for moving inside the 'cloths' inventory
 			return 1
 		end
 		stack = inventory:get_stack(inventory_info.from_list, inventory_info.from_index)
-	elseif action == "put" and inventory_info.listname == "cloths" then --for moving from node inventory 'closet' to player inventory 'cloths'
+	elseif action == "put" and inventory_info.listname == "cloths" then
+		--for moving from node inventory 'closet' to player inventory 'cloths'
 		stack = inventory_info.stack
 	else
 		return
