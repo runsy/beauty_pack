@@ -1,23 +1,60 @@
 closet.container = {}
 closet.container.open_containers = {}
 
+function closet.compose_preview(clicker, gender)
+	local inv = clicker:get_inventory()
+	local inv_list = inv:get_list("cloths")
+	local head, upper, lower
+	for i = 1, #inv_list do
+		local item_name = inv_list[i]:get_name()
+		local cloth_type = minetest.get_item_group(item_name, "cloth")
+		if cloth_type == 1 then
+			head = minetest.registered_items[item_name]._cloth_preview
+		elseif cloth_type == 2 then
+			upper = minetest.registered_items[item_name]._cloth_preview
+		elseif cloth_type == 3 then
+			lower = minetest.registered_items[item_name]._cloth_preview
+		end
+	end
+	local preview, texture_base
+	if gender == "male" then
+		texture_base= "closet_player_preview.png"
+	else
+		texture_base = "closet_female_preview.png"
+	end
+	preview="[combine:32x64:0,0="..texture_base
+	if head then
+		preview= preview .. ":8,0="..head
+	end
+	if upper then
+		preview= preview .. ":0,16="..upper
+	end
+	if lower then
+		preview= preview .. ":8,40="..lower
+	end
+	return preview
+end
+
+	--if minetest.get_modpath("3d_armor")~=nil then
+		--local clicker_name = clicker:get_player_name()
+		--texture = armor.textures[clicker_name].skin
+		--5.4--texture = minetest.formspec_escape(armor.textures[clicker_name].skin)..","..
+		--5.4armor.textures[clicker_name].armor..","..armor.textures[clicker_name].wielditem
+	--else
+
+		--5.4--texture = clicker:get_properties().textures[1]
+	--end
+	--minetest.chat_send_all(raw_texture)
+
 function closet.container.get_container_formspec(pos, clicker)
 	local gender = player_api.get_gender(clicker)
 	local model = player_api.get_gender_model(gender)
-	local texture
-	if minetest.get_modpath("3d_armor")~=nil then
-		local clicker_name = clicker:get_player_name()
-		texture = minetest.formspec_escape(armor.textures[clicker_name].skin)..","..
-			armor.textures[clicker_name].armor..","..armor.textures[clicker_name].wielditem
-	else
-		texture = clicker:get_properties().textures[1]
-	end
+	local preview = closet.compose_preview(clicker, gender)
 	local spos = pos.x .. "," .. pos.y .. "," .. pos.z
-
 	local formspec =
 		"size[8,8.25]" ..
-		"style[preview_model;frame_loop=0,79]"..
-		"model[0,0;5,5;preview_model;"..model..";"..texture..";-10,195]" ..
+		--5.4--"model[0,0;5,5;preview_model;"..model..";"..texture..";-10,195;;;0,79]"..
+		"image[0.5,0.5;2,4;"..preview.."]" ..
 		"list[current_player;cloths;3,0.25;1,4]" ..
 		"list[nodemeta:" .. spos .. ";closet;5,0.25;3,12;]" ..
 		"list[current_player;main;0,4.5;8,1;]" ..
