@@ -1,6 +1,18 @@
 closet.container = {}
 closet.container.open_containers = {}
 
+local _contexts = {}
+
+local function get_context(name)
+    local context = _contexts[name] or {}
+    _contexts[name] = context
+    return context
+end
+
+minetest.register_on_leaveplayer(function(player)
+    _contexts[player:get_player_name()] = nil
+end)
+
 function closet.compose_preview(clicker, gender)
 	local inv = clicker:get_inventory()
 	local inv_list = inv:get_list("cloths")
@@ -98,6 +110,28 @@ minetest.register_allow_player_inventory_action(function(player, action, invento
 	return 0
 end)
 
+minetest.register_on_player_inventory_action(function(player, action, inventory, inventory_info)
+	local update_cloths
+	if (action == "move" and inventory_info.to_list == "cloths") then
+		--for moving items from player inventory list 'main' to 'cloths'
+		if inventory_info.from_list == inventory_info.to_list then --for moving inside the 'cloths' inventory
+			update_cloths = false
+		end
+		update_cloths = true
+	elseif (action == "move" and inventory_info.to_list == "main" and inventory_info.from_list == "cloths") then
+		update_cloths = true
+	elseif (action == "put" or action == "take") and inventory_info.listname == "cloths" then
+		update_cloths = true
+	else
+		return
+	end
+	if update_cloths then
+		local player_name = player:get_player_name()
+		minetest.show_formspec(player_name,
+			"closet:container", closet.container.get_container_formspec(_contexts[player_name], player))
+	end
+end)
+
 function closet.container.container_lid_close(pn)
 	local container_open_info = closet.container.open_containers[pn]
 	local pos = container_open_info.pos
@@ -192,7 +226,9 @@ function closet.register_container(name, d)
 		minetest.after(0.2, minetest.show_formspec,
 				clicker:get_player_name(),
 				"closet:container", closet.container.get_container_formspec(pos, clicker))
-		closet.container.open_containers[clicker:get_player_name()] = { pos = pos, sound = def.sound_close, swap = name }
+		local player_name = clicker:get_player_name()
+		_contexts[player_name] = pos
+		closet.container.open_containers[player_name] = { pos = pos, sound = def.sound_close, swap = name }
 	end
 	def.on_blast = function(pos)
 		local drops = {}
