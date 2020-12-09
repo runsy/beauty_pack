@@ -1,10 +1,10 @@
 --
--- default_cloths
+-- default_clothes
 -- License:GPLv3
 --
 
 --
--- Default Cloths
+-- Default Clothes
 --
 
 minetest.register_craft({
