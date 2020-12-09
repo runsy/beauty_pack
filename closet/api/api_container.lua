@@ -16,7 +16,7 @@ end)
 function closet.compose_preview(clicker, gender)
 	local inv = clicker:get_inventory()
 	local inv_list = inv:get_list("cloths")
-	local head, upper, lower
+	local head, upper, lower, underwear
 	for i = 1, #inv_list do
 		local item_name = inv_list[i]:get_name()
 		local cloth_type = minetest.get_item_group(item_name, "cloth")
@@ -26,7 +26,11 @@ function closet.compose_preview(clicker, gender)
 			upper = minetest.registered_items[item_name]._cloth_preview
 		elseif cloth_type == 3 then
 			lower = minetest.registered_items[item_name]._cloth_preview
+			underwear = true
 		end
+	end
+	if not(underwear) then
+		lower = "cloth_lower_underwear_preview.png"
 	end
 	local preview, texture_base
 	if gender == "male" then
