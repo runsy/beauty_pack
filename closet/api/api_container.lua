@@ -67,6 +67,17 @@ end
 	--end
 	--minetest.chat_send_all(raw_texture)
 
+local function get_bg(x,y,rows,columns,image)
+	local out = ""
+	for i=0,columns do
+		out = out .."image["..x+i..","..y..";1,1;"..image.."]"
+		for j = 0,rows do
+			out = out .."image["..x+i..","..y+j..";1,1;"..image.."]"
+		end
+	end
+	return out
+end
+
 function closet.container.get_container_formspec(pos, clicker)
 	local gender = player_api.get_gender(clicker)
 	--5.4--local model = player_api.get_gender_model(gender)
@@ -77,7 +88,9 @@ function closet.container.get_container_formspec(pos, clicker)
 		--5.4--"model[0,0;5,5;preview_model;"..model..";"..texture..";-10,195;;;0,79]"..
 		"image[0.5,0.5;2,4;"..preview.."]" ..
 		"list[current_player;cloths;2.5,0.25;2,4]" ..
+		get_bg(2.5,0.25,3,1,"closet_gui_clothes_bg.png")..
 		"list[nodemeta:" .. spos .. ";closet;5,0.25;3,12;]" ..
+		get_bg(5,0.25,3,2,"closet_gui_closet_bg.png")..
 		"list[current_player;main;0,4.5;8,1;]" ..
 		"list[current_player;main;0,5.5;8,3;8]" ..
 		default.get_hotbar_bg(0,4.5)
