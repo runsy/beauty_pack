@@ -61,21 +61,21 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	elseif fields.btn_violet_eye then
 		base_texture["eye"] = "player_violet_eye.png"
 	elseif fields.btn_normal_skin then
-		base_texture["skin"].color = nil
+		base_texture["skin"].color = "normal"
 	elseif fields.btn_brown_skin then
-		base_texture["skin"].color = {color = "#a56d40", ratio = 150}
+		base_texture["skin"].color = "brown"
 	elseif fields.btn_black_skin then
-		base_texture["skin"].color = {color = "#462409", ratio = 127}
+		base_texture["skin"].color = "black"
 	elseif fields.btn_black_hair then
-		base_texture["hair"].color = {color = player_api.hair_colors["black"].color, ratio = player_api.hair_colors["black"].ratio}
+		base_texture["hair"].color = "black"
 	elseif fields.btn_gray_hair then
-		base_texture["hair"].color = nil
+		base_texture["hair"].color = "gray"
 	elseif fields.btn_brown_hair then
-		base_texture["hair"].color = {color = player_api.hair_colors["brown"].color, ratio = player_api.hair_colors["brown"].ratio}
+		base_texture["hair"].color = "brown"
 	elseif fields.btn_red_hair then
-		base_texture["hair"].color = {color = player_api.hair_colors["red"].color, ratio = player_api.hair_colors["red"].ratio}
+		base_texture["hair"].color = "red"
 	elseif fields.btn_blonde_hair then
-		base_texture["hair"].color = {color = player_api.hair_colors["blonde"].color, ratio = player_api.hair_colors["blonde"].ratio}
+		base_texture["hair"].color = "blonde"
 	end
 	player_api.set_base_texture(player, base_texture)
 	player_api.set_texture(player)
