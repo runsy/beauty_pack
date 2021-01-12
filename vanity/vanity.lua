@@ -16,7 +16,7 @@ function vanity.get_vanity_formspec(clicker)
 
 	local formspec =
 		"formspec_version[4]"..
-		"size[8.75,6.25]"..
+		"size[8.75,8.25]"..
 		"image[0.5,0.5;4,4;".. face_preview .."]"..
 		"image_button[4.75,2.5;1,1;player_blue_eye.png;btn_blue_eye;]"..
 		"label[6,0.5;"..S("Skin Tone").."]"..
@@ -29,8 +29,13 @@ function vanity.get_vanity_formspec(clicker)
 		"image_button[4.75,3.75;1,1;player_gray_eye.png;btn_gray_eye;]"..
 		"image_button[6,3.75;1,1;player_hazel_eye.png;btn_hazel_eye;]"..
 		"image_button[7.25,3.75;1,1;player_violet_eye.png;btn_violet_eye;]"..
+		"image_button[0.5,5;1,1;;btn_black_hair;]"..
+		"image_button[1.75,5;1,1;;btn_gray_hair;]"..
+		"image_button[3,5;1,1;;btn_brown_hair;]"..
+		"image_button[4.25,5;1,1;;btn_red_hair;]"..
+		"image_button[5.5,5;1,1;;btn_blonde_hair;]"..
 		"style_type[button_exit;bgcolor=#006699;textcolor=white]"..
-		"button_exit[4,5;1,1;btn_close;"..S("Close").."]"
+		"button_exit[4,7;1,1;btn_close;"..S("Close").."]"
 	return formspec
 end
 
@@ -56,11 +61,21 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	elseif fields.btn_violet_eye then
 		base_texture["eye"] = "player_violet_eye.png"
 	elseif fields.btn_normal_skin then
-		base_texture["skin"] = nil
+		base_texture["skin"].color = nil
 	elseif fields.btn_brown_skin then
-		base_texture["skin"] = {color = "#a56d40", ratio = 150}
+		base_texture["skin"].color = {color = "#a56d40", ratio = 150}
 	elseif fields.btn_black_skin then
-		base_texture["skin"] = {color = "#462409", ratio = 127}
+		base_texture["skin"].color = {color = "#462409", ratio = 127}
+	elseif fields.btn_black_hair then
+		base_texture["hair"].color = {color = player_api.hair_colors["black"].color, ratio = player_api.hair_colors["black"].ratio}
+	elseif fields.btn_gray_hair then
+		base_texture["hair"].color = nil
+	elseif fields.btn_brown_hair then
+		base_texture["hair"].color = {color = player_api.hair_colors["brown"].color, ratio = player_api.hair_colors["brown"].ratio}
+	elseif fields.btn_red_hair then
+		base_texture["hair"].color = {color = player_api.hair_colors["red"].color, ratio = player_api.hair_colors["red"].ratio}
+	elseif fields.btn_blonde_hair then
+		base_texture["hair"].color = {color = player_api.hair_colors["blonde"].color, ratio = player_api.hair_colors["blonde"].ratio}
 	end
 	player_api.set_base_texture(player, base_texture)
 	player_api.set_texture(player)
