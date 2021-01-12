@@ -19,12 +19,12 @@ function vanity.get_vanity_formspec(clicker)
 		"size[8.75,8.25]"..
 		"image[0.5,0.5;4,4;".. face_preview .."]"..
 		--Skins
-		"label[6,0.5;"..S("Skin Tone").."]"..
+		"label[6,0.5;"..S("Skin Tone")..":]"..
 		"image_button[4.75,0.75;1,1;player_normal_skin.png;btn_normal_skin;]"..
 		"image_button[6,0.75;1,1;player_brown_skin.png;btn_brown_skin;]"..
 		"image_button[7.25,0.75;1,1;player_black_skin.png;btn_black_skin;]"..
 		--Eyes
-		"label[6,2.25;"..S("Eyes Color").."]"..
+		"label[6,2.25;"..S("Eyes Color")..":]"..
 		"image_button[4.75,2.5;1,1;player_blue_eye.png;btn_blue_eye;]"..
 		"image_button[6,2.5;1,1;player_brown_eye.png;btn_brown_eye;]"..
 		"image_button[7.25,2.5;1,1;player_green_eye.png;btn_green_eye;]"..
