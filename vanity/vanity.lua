@@ -18,24 +18,38 @@ function vanity.get_vanity_formspec(clicker)
 		"formspec_version[4]"..
 		"size[8.75,8.25]"..
 		"image[0.5,0.5;4,4;".. face_preview .."]"..
-		"image_button[4.75,2.5;1,1;player_blue_eye.png;btn_blue_eye;]"..
+		--Skins
 		"label[6,0.5;"..S("Skin Tone").."]"..
 		"image_button[4.75,0.75;1,1;player_normal_skin.png;btn_normal_skin;]"..
 		"image_button[6,0.75;1,1;player_brown_skin.png;btn_brown_skin;]"..
 		"image_button[7.25,0.75;1,1;player_black_skin.png;btn_black_skin;]"..
+		--Eyes
 		"label[6,2.25;"..S("Eyes Color").."]"..
+		"image_button[4.75,2.5;1,1;player_blue_eye.png;btn_blue_eye;]"..
 		"image_button[6,2.5;1,1;player_brown_eye.png;btn_brown_eye;]"..
 		"image_button[7.25,2.5;1,1;player_green_eye.png;btn_green_eye;]"..
 		"image_button[4.75,3.75;1,1;player_gray_eye.png;btn_gray_eye;]"..
 		"image_button[6,3.75;1,1;player_hazel_eye.png;btn_hazel_eye;]"..
 		"image_button[7.25,3.75;1,1;player_violet_eye.png;btn_violet_eye;]"..
-		"image_button[0.5,5;1,1;;btn_black_hair;]"..
-		"image_button[1.75,5;1,1;;btn_gray_hair;]"..
-		"image_button[3,5;1,1;;btn_brown_hair;]"..
-		"image_button[4.25,5;1,1;;btn_red_hair;]"..
-		"image_button[5.5,5;1,1;;btn_blonde_hair;]"..
+		--Hairs
+		"label[0.5,5.25;"..S("Hair").."\n"..S("Color")..":]"..
+		"tooltip[btn_black_hair;"..S("Dark-haired").."]"..
+		"style[btn_black_hair;bgcolor=black]"..
+		"image_button[2.25,5;1,1;;btn_black_hair;]"..
+		"tooltip[btn_gray_hair;"..S("Gray-haired").."]"..
+		"style[btn_gray_hair;bgcolor=lightgray]"..
+		"image_button[3.5,5;1,1;;btn_gray_hair;]"..
+		"tooltip[btn_brown_hair;"..S("Brown").."]"..
+		"style[btn_brown_hair;bgcolor=brown]"..
+		"image_button[4.75,5;1,1;;btn_brown_hair;]"..
+		"tooltip[btn_red_hair;"..S("Red-haired").."]"..
+		"style[btn_red_hair;bgcolor=darkorange]"..
+		"image_button[6,5;1,1;;btn_red_hair;]"..
+		"tooltip[btn_blonde_hair;"..S("Blonde").."]"..
+		"style[btn_blonde_hair;bgcolor=yellow]"..
+		"image_button[7.25,5;1,1;;btn_blonde_hair;]"..
 		"style_type[button_exit;bgcolor=#006699;textcolor=white]"..
-		"button_exit[4,7;1,1;btn_close;"..S("Close").."]"
+		"button_exit[4,6.5;1,1;btn_close;"..S("Close").."]"
 	return formspec
 end
 
