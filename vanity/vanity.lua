@@ -82,14 +82,18 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		base_texture["skin"].color = "black"
 	elseif fields.btn_black_hair then
 		base_texture["hair"].color = "black"
+		base_texture["eyebrowns"].color = "gray"
 	elseif fields.btn_gray_hair then
 		base_texture["hair"].color = "gray"
+		base_texture["eyebrowns"].color = "gray"
 	elseif fields.btn_brown_hair then
 		base_texture["hair"].color = "brown"
+		base_texture["eyebrowns"].color = "brown"
 	elseif fields.btn_red_hair then
 		base_texture["hair"].color = "red"
 	elseif fields.btn_blonde_hair then
 		base_texture["hair"].color = "blonde"
+		base_texture["eyebrowns"].color = "blonde"
 	end
 	player_api.set_base_texture(player, base_texture)
 	player_api.set_texture(player)
