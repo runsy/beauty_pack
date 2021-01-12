@@ -1,21 +1,19 @@
 local S = ...
 
 function vanity.get_vanity_formspec(clicker)
-	local gender = player_api.get_gender(clicker)
 	--5.4--local model = player_api.get_gender_model(gender)
-	local face_base = player_api.compose_skin(clicker, "vanity_face_base.png")
-	local base_texture = player_api.get_base_texture_table(clicker)
-	local eyebrows = base_texture["eyebrowns"]
-	local eye = base_texture["eye"]
-	local mouth = base_texture["mouth"]
-	local hair = base_texture["hair"]
-	local face_preview = minetest.formspec_escape("[combine:16x16:0,0=".. face_base ..
-		":0,0=" .. eyebrows ..
-		":2,8=" .. eye ..
-		":10,8=" .. eye ..
-		":0,12=" .. mouth ..
-		":0,0 =" .. string.sub(hair, 0, -5).."_preview.png"
-	)
+
+	local face_preview = minetest.formspec_escape(player_api.compose_base_texture(clicker, {
+		canvas_size ="16x16",
+		skin_texture = "vanity_face_base.png",
+		eyebrowns_pos = "0,0",
+		eye_right_pos = "2,8",
+		eye_left_pos = "10,8",
+		mouth_pos = "0,12",
+		hair_preview = true,
+		hair_pos = "0,0",
+	}))
+
 	local formspec =
 		"formspec_version[4]"..
 		"size[8.75,6.25]"..
@@ -44,8 +42,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		return
 	end
 	local player_name = player:get_player_name()
-	base_texture = player_api.get_base_texture_table(player)
-	local change = false
+	local base_texture = player_api.get_base_texture_table(player)
 	if fields.btn_blue_eye then
 		base_texture["eye"] = "player_blue_eye.png"
 	elseif fields.btn_brown_eye then
